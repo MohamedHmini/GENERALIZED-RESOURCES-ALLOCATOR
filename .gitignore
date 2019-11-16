@@ -1,5 +1,4 @@
 .vscode/*.json
-*.csv
 *.exe
 test.c
 tst.c
