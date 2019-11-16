@@ -1,7 +1,4 @@
-
-HLCio/
 .vscode/*.json
-
 *.csv
 *.exe
 test.c

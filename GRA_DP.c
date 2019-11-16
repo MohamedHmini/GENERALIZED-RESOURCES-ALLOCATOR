@@ -17,13 +17,8 @@
 // typedef SOLUTION_PATH* PATHS;
 
 
-void getOptimalPaths(DATAFRAME *r, DATAFRAME *f){
-    DATAFRAME *paths = Dataframe(0,0,NULL);
 
-}
-
-
-DATAFRAME *fit(DATAFRAME *r){
+DATAFRAME *fit_to_find_one_optimal_path(DATAFRAME *r){
 
     DF_ELEMENT e = arrcreate(3);
 
@@ -67,7 +62,7 @@ DATAFRAME *fit(DATAFRAME *r){
 
 }
 
-DATAFRAME *fit2(DATAFRAME *r){
+DATAFRAME *fit_to_find_multiple_optimal_paths(DATAFRAME *r){
 
     DF_ELEMENT e = arrcreate(1);
     e.node.Arr->data[0] = arrcreate(3);
@@ -95,7 +90,7 @@ DATAFRAME *fit2(DATAFRAME *r){
               
                 if(v >= f->data[N - k][m].node.Arr->data[0].node.Arr->data[2].node.Int){
                    if(v > f->data[N - k][m].node.Arr->data[0].node.Arr->data[2].node.Int){
-                        free(f->data[N - k][m].node.Arr);
+                        arrfree(&f->data[N - k][m]);
                         f->data[N - k][m] = arrcreate(0);
                     }
 
@@ -119,7 +114,7 @@ DATAFRAME *fit2(DATAFRAME *r){
 
 }
 
-// needs to be debugged/!
+// still needs to be debugged/!
 void get_policies(DATAFRAME *f, int k, int i, DF_ELEMENT *policy, DF_ELEMENT *policies) {
     if(k == 0){
         DF_ELEMENT copy = df_element_copy(*policy);
@@ -128,32 +123,35 @@ void get_policies(DATAFRAME *f, int k, int i, DF_ELEMENT *policy, DF_ELEMENT *po
     }
 
     for(int j = 0; j < f->data[k - 1][i].node.Arr->size; j++){
-        arrpush(policy, f->data[k - 1][1].node.Arr->data[j].node.Arr->data[0]);
-        get_policies(f, k - 1, f->data[k - 1][1].node.Arr->data[j].node.Arr->data[1].node.Int, policy, policies);
+        arrpush(policy, f->data[k - 1][i].node.Arr->data[j].node.Arr->data[0]);
+        get_policies(f, k - 1, f->data[k - 1][i].node.Arr->data[j].node.Arr->data[1].node.Int, policy, policies);
         arrpop(policy);
     }
 }
 
 void main(){
-    FILE *file = open_file("E:\\INSEA-STUDENT\\S1\\TECH-OPT\\GRA-PROJECT\\sorted.csv", "r");
+    FILE *file = open_file("E:\\INSEA-STUDENT\\S1\\TECH-OPT\\GRA-PROJECT\\sorted2.csv", "r");
 	DATAFRAME *r = csv_to_df(file);
     // display_df(r);
 	df_retype(r, DF_ELEMENT_TInt);
 
-    DATAFRAME *f = fit2(r);
+    DATAFRAME *f = fit_to_find_multiple_optimal_paths(r);
     display_df(f);
     DF_ELEMENT policies = arrcreate(0);
     DF_ELEMENT policy = arrcreate(0);
     get_policies(f, f->len_rows, f->len_cols - 1, &policy, &policies);
 
     for(int i = 0; i<policies.node.Arr->size; i++){
+        printf("\"");
         for(int j = 0; j < policies.node.Arr->data[i].node.Arr->size; j++){
             printf("%d ",policies.node.Arr->data[i].node.Arr->data[j].node.Int);
         }
-        printf("\n");
+        printf("\",\n");
     }
 
-    free(f);
-    free(r);
+    arrfree(&policies);
+    arrfree(&policy);
+    df_free(f);
+    df_free(r);
 	fclose(file);
 }
