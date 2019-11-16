@@ -1,0 +1,9 @@
+
+HLCio/
+.vscode/*.json
+
+*.csv
+*.exe
+test.c
+tst.c
+test_dynamic_arrays.c

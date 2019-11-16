@@ -2,6 +2,9 @@
     "python.pythonPath": "C:\\Users\\MohamedHmini\\Anaconda3\\python.exe",
     "files.associations": {
         "GRA_GREEDY.C": "cpp",
-        "dataframe.h": "c"
-    }
+        "dataframe.h": "c",
+        "string.h": "c",
+        "advio.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "Enabled"
 }
