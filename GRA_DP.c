@@ -6,20 +6,22 @@
 #include "GRA.h"
 
 
-void main(){
-    FILE *file = open_file("E:\\INSEA-STUDENT\\S1\\TECH-OPT\\GRA-PROJECT\\datasEts\\sorted.csv", "r");
+void main(int argc, char *args[]){
+    char *filename = args[1];
+    FILE *file = open_file(filename, "r");
+    // FILE *file = open_file("E:\\INSEA-STUDENT\\S1\\TECH-OPT\\GRA-PROJECT\\datasEts\\sorted.csv", "r");
 	DATAFRAME *r = csv_to_df(file);
     // display_df(r);
 	df_retype(r, DF_ELEMENT_TInt);
 
     DATAFRAME *f = fit_to_find_multiple_optimal_paths(r);
     // display_df(f);
-    GRA_RESULTS *results = malloc(sizeof(GRA_RESULTS));
+    GRA_RESULTS *results = gracreate();
     results->optimal_value = f->data[f->len_rows - 1][f->len_cols - 1].node.Arr->data[0].node.Arr->data[2].node.Int;
     results->policies = arrcreate(0);
     DF_ELEMENT policy = arrcreate(0);
     load_policies(f, f->len_rows, f->len_cols - 1, &policy, &results->policies);
-    // display_results(*results);
+    display_results(*results);
 
     arrfree(&results->policies);
     arrfree(&policy);

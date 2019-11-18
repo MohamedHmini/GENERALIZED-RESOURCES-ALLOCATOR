@@ -5,6 +5,11 @@
 #include "GRA.h"
 
 
+
+GRA_RESULTS *gracreate(){
+    return malloc(sizeof(GRA_RESULTS));
+}
+
 DATAFRAME *fit_to_find_one_optimal_path(DATAFRAME *r){
 
     DF_ELEMENT e = arrcreate(3);
